@@ -3,8 +3,8 @@ import { FC } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-import { useSearchProductByNameModal } from '../hooks';
 import { LoadingSpinner, Searchbar } from '../../common/components';
+import { useSearchProductByNameModal } from '../hooks';
 
 interface Props {
   isModalOpen:boolean,

@@ -1,16 +1,14 @@
 import React, { useEffect, useReducer, useState } from 'react'
-import { useMutation } from '@tanstack/react-query';
 
+import { fireErrorMessage, fireSuccessMessage, compareProductAndUpdateDto } from '../../common/helpers';
+import { initialStateUpdateProduct, UpdateProductModalActionKind, updateProductReducer } from '../reducers';
 import { Product, UpdateProductDto } from '../interfaces';
+import { useLoading } from '../../common/context';
 import { useProduct } from './useProducts';
 import defaultApi from '../../api/defaultApi';
-import { fireErrorMessage, fireSuccessMessage, compareProductAndUpdateDto, sleep } from '../../common/helpers';
-import { useLoading } from '../../common/context/LoadingContext';
-import { initialStateUpdateProduct, UpdateProductModalActionKind, updateProductReducer } from '../reducers';
 
 
 const updateProduct = async( productID:string, updateProductDto:UpdateProductDto ):Promise<Product> => {
-    await sleep(2);
     const { data } = await defaultApi.patch<Product>(`/products/${productID}`, {...updateProductDto}, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });
@@ -19,12 +17,12 @@ const updateProduct = async( productID:string, updateProductDto:UpdateProductDto
 
 export const useUpdateProductModal = () => {
     
-    const [showChildren, setShowChildren] = useState(false);
+    const [ showChildren, setShowChildren ] = useState(false);
 
     const { setLoading } = useLoading();
     const { searchProductQuery, currentProduct, setCurrentProduct } = useProduct({onError:(err:any) => { reinitialize() }});
 
-    const [{inputBarcodeValue, updateProductDto}, dispatch] = useReducer(updateProductReducer, initialStateUpdateProduct);
+    const [{ inputBarcodeValue, updateProductDto }, dispatch] = useReducer(updateProductReducer, initialStateUpdateProduct);
 
     const reinitialize = () =>{
         dispatch({type:UpdateProductModalActionKind.REINITIALIZE});
@@ -40,22 +38,7 @@ export const useUpdateProductModal = () => {
         dispatch({type:UpdateProductModalActionKind.CHANGE_INPUT_BARCODE, payload:e.target.value});
     }
     
-    const updateProductMutation = useMutation({
-        mutationFn:()=>updateProduct(currentProduct!.id, updateProductDto!),
-        retry:false,
-        onError:(err:any)=>{
-            setLoading(false);
-            fireErrorMessage(err.response.data.message);
-        },
-        onSuccess:(data)=>{
-            setLoading(false);
-            setCurrentProduct(data);
-            fireSuccessMessage(`El producto ${data.name} fué actualizado!`, 4000);
-            dispatch({type:UpdateProductModalActionKind.REINITIALIZE});
-        }
-    });
-
-    const onSubmit = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const onSubmit = async (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         if (updateProductDto && currentProduct){
             
@@ -67,7 +50,23 @@ export const useUpdateProductModal = () => {
 
             if (updateProductDto.sell_price && updateProductDto.sell_price < 1 ) return fireErrorMessage('El precio tienen que ser mayor a 0');
             
-            if (!compareProductAndUpdateDto(currentProduct, updateProductDto)) updateProductMutation.mutate();
+            if (!compareProductAndUpdateDto(currentProduct, updateProductDto)) {
+                try {
+
+                    const product = await updateProduct(currentProduct!.id, updateProductDto!);
+                    setLoading(false);
+                    setCurrentProduct(product);
+                    fireSuccessMessage(`El producto ${product.name} fué actualizado!`, 4000);
+                    dispatch({type:UpdateProductModalActionKind.REINITIALIZE});
+
+                } catch (error:any) {
+                    setLoading(false);
+                    fireErrorMessage(error.response.data.message);
+                }
+
+
+            }
+
             else {
                 setLoading(false);
                 return fireErrorMessage('Se debe ingresar algun cambio en el producto');
@@ -92,6 +91,7 @@ export const useUpdateProductModal = () => {
         dispatch({type:UpdateProductModalActionKind.CHANGE_INPUT_BARCODE, payload:''});
     }
 
+
     useEffect(()=>{
 
         if (currentProduct){
@@ -108,7 +108,10 @@ export const useUpdateProductModal = () => {
             setShowChildren(true);
         }
 
-        else setShowChildren(false);
+        else {
+            setShowChildren(false);
+            dispatch({type:UpdateProductModalActionKind.CHANGE_INPUT_BARCODE, payload:''});
+        }
 
     }, [currentProduct]);
 

@@ -11,6 +11,7 @@ interface Props{
 export const UpdateProductModal:FC<Props> = ({isModalOpen, closeModal}) => {
 
     const {
+        
         showChildren,
 
         inputBarcodeValue,
@@ -41,33 +42,37 @@ export const UpdateProductModal:FC<Props> = ({isModalOpen, closeModal}) => {
         showSearchProductButton
         searchProduct={searchProduct}
     >
+        {
+            (showChildren) && 
+            <>
+                <div className='mt-1'>
 
-        <div className='mt-1'>
+                    <div className='text-center'><label> Producto: </label></div> 
+                    <input
+                        className="custom-input mt-1 text-center"
+                        name="name"
+                        value={name}
+                        onChange={handleFormChange}
+                        autoComplete='off'
+                    />
 
-            <div className='text-center'><label> Producto: </label></div> 
-            <input
-                className="custom-input mt-1 text-center"
-                name="name"
-                value={name}
-                onChange={handleFormChange}
-                autoComplete='off'
-            />
+                    <div className='text-center'><label> Precio: </label></div> 
+                    <input
+                        className="custom-input mt-1 text-center"
+                        name="sell_price"
+                        value={sell_price}
+                        onChange={handleFormChange}
+                        autoComplete='off'
+                    />
 
-            <div className='text-center'><label> Precio: </label></div> 
-            <input
-                className="custom-input mt-1 text-center"
-                name="sell_price"
-                value={sell_price}
-                onChange={handleFormChange}
-                autoComplete='off'
-            />
-
-        </div>
-        <div className="mt-3">
-            <button className='custom-button' onClick={onSubmit}>
-                Guardar producto
-            </button>
-        </div>
+                </div>
+                <div className="mt-3">
+                    <button className='custom-button' onClick={onSubmit}>
+                        Guardar producto
+                    </button>
+                </div>
+            </>
+        }
 
     </ModalLayout>
   )

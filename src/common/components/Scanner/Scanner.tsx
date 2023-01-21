@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Html5QrcodeSupportedFormats, Html5Qrcode } from "html5-qrcode";
 import { Html5QrcodeResult } from "html5-qrcode/cjs/core";
 import { CameraDevice } from 'html5-qrcode/esm/camera/core';

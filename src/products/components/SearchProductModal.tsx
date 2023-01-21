@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import moment from 'moment';
 
 import { ModalLayout } from '../layout/ModalLayout'
@@ -31,11 +31,11 @@ export const SearchProductModal:FC<Props> = ({isModalOpen, closeModal}) => {
             closeModal();
             reinitialize();
         }}
-        inputBarcodeValue={inputBarcodeValue}
-        onInputBarcodeValueChange={onInputBarcodeValueChange}
+        inputBarcodeValue={ inputBarcodeValue }
+        onInputBarcodeValueChange={ onInputBarcodeValueChange }
         showSearchProductButton
-        searchProduct={searchProduct}
-        onShowModal={onShowModal}
+        searchProduct={ searchProduct }
+        onShowModal={ onShowModal }
     >
         {
             (currentProduct) && (

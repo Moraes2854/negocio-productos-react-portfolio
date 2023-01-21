@@ -6,19 +6,22 @@ import { AuthResponse } from "../interfaces/AuthResponse";
 import { User } from "../interfaces/User";
 
 interface AuthContextInterface {
-  user:User|null;
+  closeModal:()=>void;
   isLoginModalOpen:boolean,
   login:(email:string, password:string)=>Promise<void>;
   logout:()=>void;
   openModal:()=>void;
-  closeModal:()=>void;
+  user:User|null;
 }
 
 
 const AuthContext = createContext<AuthContextInterface>({
+  closeModal:()=>{},
+  isLoginModalOpen: false,
+  login:async()=>{},
+  logout:()=>{},
+  openModal:()=>{},
   user: null,
-  //@ts-ignore
-  setUser: null,
 });
 
 export const AuthProvider = ({ children }:any) => {

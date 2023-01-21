@@ -35,11 +35,14 @@ export const ModalLayout: FC<Props> = ({isOpen, closeModal, modalTitle, searchPr
                 if (inputBarcodeRef.current) inputBarcodeRef.current.focus();
                 if (onShowModal) onShowModal();
             }}
+            
             onHide={ closeModal } 
+            onBackdropClick={ closeModal }
+            onExit={ closeModal }
+
             style={{
                 display:(loading) ? 'none' : 'flex',
             }}
-            onBackdropClick={closeModal}
         >
             <Modal.Header closeButton>
                 <Modal.Title>{modalTitle}</Modal.Title>

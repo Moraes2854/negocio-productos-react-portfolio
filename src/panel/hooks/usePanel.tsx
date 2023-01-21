@@ -1,8 +1,7 @@
-import { useState } from 'react'
 
 import defaultApi from '../../api/defaultApi';
-import { useLoading } from '../context/LoadingContext';
-import { fireErrorMessage, fireSuccessMessage } from '../helpers';
+import { useLoading } from '../../common/context/LoadingContext';
+import { fireErrorMessage, fireSuccessMessage } from '../../common/helpers';
 
 const downloadSQLBackupDB = async () :Promise<string> => {
 
@@ -33,7 +32,7 @@ const downloadSQLBackupDB = async () :Promise<string> => {
     })
 }
 
-export const useNegocioProductApp = () => {
+export const usePanel = () => {
     const { setLoading } = useLoading();
 
 
@@ -55,10 +54,6 @@ export const useNegocioProductApp = () => {
 
 
     return {
-
-
-
         onDownloadBackupButtonClick,
-
     }
 }

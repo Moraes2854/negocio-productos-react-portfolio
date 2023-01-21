@@ -106,7 +106,7 @@ export const AppProvider = ({ children }:any) => {
   );
 }
 
-export const useApp = () =>{
+export const useAppContext = () =>{
   const context = useContext(AppContext);
   
   if (!context) {

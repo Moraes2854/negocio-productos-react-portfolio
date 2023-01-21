@@ -29,7 +29,6 @@ export const CreateProductModal:FC<Props> = ({isModalOpen, closeModal}) => {
             }} 
             onShow={()=>{
                 if (inputBarcodeRef.current) inputBarcodeRef.current.focus();
-
             }}
             style={{
                 display:(loading) ? 'none' : 'flex',

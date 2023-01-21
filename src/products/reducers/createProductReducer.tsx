@@ -7,7 +7,6 @@ export enum CreateProductModalActionKind {
     REINITIALIZE = "REINITIALIZE",
 }
 
-
 const stringProperties:string[] = ['barcode','name'];
 const numberProperties:string[] = ['buy_price','sell_price'];
 

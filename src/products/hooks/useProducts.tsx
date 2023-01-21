@@ -1,14 +1,10 @@
-import { useState } from 'react';
-
-import defaultApi from '../../api/defaultApi';
+import { fireErrorMessage } from '../../common/helpers';
 import { Product } from '../interfaces';
-import { useLoading } from '../../common/context/LoadingContext';
-import { fireErrorMessage, sleep } from '../../common/helpers';
-import { useApp } from '../../common/context/AppContext';
+import { useAppContext, useLoading } from '../../common/context';
+import defaultApi from '../../api/defaultApi';
 
 const getProduct = async( barcode:string ):Promise<Product|null> => {
     if (barcode !== ''){
-        await sleep(2);
         const { data } = await defaultApi.get<Product>(`/products/${barcode}`);
         return data;
     }
@@ -25,12 +21,14 @@ export const useProduct = ({ onError }:Props) => {
     const {
         currentProduct,
         setCurrentProduct,
-    } = useApp();
+    } = useAppContext();
 
 
     const { setLoading } = useLoading();
 
-    const searchProductQuery= (barcode:string) => {
+    const searchProductQuery = ( barcode:string ) => {
+        
+        if (barcode === '') return fireErrorMessage('Ingresar un código de barras válido');
 
         setLoading(true);
 

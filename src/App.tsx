@@ -1,23 +1,19 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { BrowserRouter } from 'react-router-dom';
 
-import { NegocioProductApp } from './NegocioProductApp';
-import { LoadingProvider } from './common/context/LoadingContext';
+import { AppProvider, LoadingProvider } from './common/context';
+import { AppRouter } from './router/AppRouter';
 import { AuthProvider } from './auth/context/AuthContext';
-import { AppProvider } from './common/context/AppContext';
-
-const client = new QueryClient();
-
 
 export const App = () => {
   return (
-    <QueryClientProvider client={ client }>
-      <AppProvider>
-        <AuthProvider>
-            <LoadingProvider>
-              <NegocioProductApp/>
-            </LoadingProvider>
-        </AuthProvider>
-      </AppProvider>
-    </QueryClientProvider>
+    <BrowserRouter>
+      <LoadingProvider>
+        <AppProvider>
+          <AuthProvider>
+              <AppRouter/>
+          </AuthProvider>
+        </AppProvider>
+      </LoadingProvider>
+    </BrowserRouter>
   )
 }

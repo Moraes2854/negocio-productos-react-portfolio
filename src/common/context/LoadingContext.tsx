@@ -8,8 +8,7 @@ interface LoadingContextInterface {
 
 const LoadingContext = createContext<LoadingContextInterface>({
   loading: false,
-  //@ts-ignore
-  setLoading: null,
+  setLoading: ()=>{},
 });
 
 export const LoadingProvider = ({ children }:any) => {

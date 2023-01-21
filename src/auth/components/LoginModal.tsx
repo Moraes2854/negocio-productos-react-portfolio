@@ -3,14 +3,13 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
-import { useLoading } from '../../common/context/LoadingContext';
 import { useAuth } from '../context/AuthContext';
 import { useLoginModal } from '../hooks/useLoginModal';
 
 export const LoginModal:FC = () => {
+
   const { isLoginModalOpen, closeModal, login } = useAuth();
   const { loginForm, handleFormChange } = useLoginModal();
-  const { loading } = useLoading();
 
   const { email, password } = loginForm;
 

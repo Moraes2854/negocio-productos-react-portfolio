@@ -36,8 +36,7 @@ export const initialStateSearchProductByNameProduct:SearchProductByNameModalStat
     errorOnSearch:false,
 }
 
-export const searchProductByNameModalReducer = (state:SearchProductByNameModalState, action:ActionType):SearchProductByNameModalState => {
-    
+export const searchProductByNameModalReducer = (state:SearchProductByNameModalState, action:ActionType):SearchProductByNameModalState => {    
     switch(action.type){
 
         case SearchProductByNameModalActionKind.ADD_PRODUCTS:

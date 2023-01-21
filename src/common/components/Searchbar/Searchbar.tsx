@@ -1,19 +1,21 @@
 import React, { FC } from 'react'
-import { useAuth } from '../../../auth/context/AuthContext';
+
 import { Product } from '../../../products/interfaces';
-import { useApp } from '../../context/AppContext';
+import { useAppContext } from '../../context/AppContext';
+import { useAuth } from '../../../auth/context/AuthContext';
+
 import './Searchbar.css';
 
 interface SearchbarProps {
     onInputChange:(e:React.ChangeEvent<HTMLInputElement>)=>void;
     onSearch:()=>void;
     productsDropdown:Product[];
-    searchIsLoading:boolean;
     searchbarInputValue:string;
+    searchIsLoading:boolean;
 }
 
 
-export const Searchbar:FC<SearchbarProps> = ({onInputChange, onSearch, productsDropdown, searchIsLoading, searchbarInputValue}) => {
+export const Searchbar:FC<SearchbarProps> = ({onInputChange, onSearch, productsDropdown, searchbarInputValue, searchIsLoading}) => {
 
     return (
         <div className="container mt-2">
@@ -30,7 +32,7 @@ export const Searchbar:FC<SearchbarProps> = ({onInputChange, onSearch, productsD
                                 type="text" 
                                 className="form-control" 
                                 onChange={onInputChange}
-                                value={searchbarInputValue}
+                                value={ searchbarInputValue }
                                 onKeyPress={(e)=>{
                                     if (e.key === 'Enter') {
                                         onSearch();
@@ -67,7 +69,7 @@ const ProductsDropdown:FC<DropdownProps> = ({products}) => {
         closeSearchProductByNameModal,
         openUpdateProductModal,
         setCurrentProduct,
-    } = useApp();
+    } = useAppContext();
 
 
     return (
@@ -75,9 +77,9 @@ const ProductsDropdown:FC<DropdownProps> = ({products}) => {
             {
                 products.map((product) => {
                     return (
-                        <div className="list border-bottom justify-content-between">
+                        <div key={`ProductsDropdownItem${product.id}`} className="list border-bottom justify-content-between">
                             <div>
-                                <span> { product.name } <strong> ${ product.sell_price } </strong></span> 
+                                <span> { product.name } <strong> ${ product.sell_price } </strong> </span> 
                             </div>
                             <div>
                                 {
@@ -86,9 +88,9 @@ const ProductsDropdown:FC<DropdownProps> = ({products}) => {
                                         className='btn btn-primary' 
                                         style={{marginRight:'5px'}}
                                         onClick={()=>{
+                                            setCurrentProduct(product);
                                             closeSearchProductByNameModal();
                                             openUpdateProductModal();
-                                            setCurrentProduct(product);
                                         }} 
                                     >
                                         Editar
